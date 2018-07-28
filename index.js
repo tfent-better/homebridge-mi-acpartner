@@ -99,6 +99,15 @@ XiaoMiAcPartner.prototype = {
                     case "climate":
                         accessories.push(new fs_Accessory.ClimateAccessory(element, this));
                         break;
+                    case "fan":
+                        accessories.push(new fs_Accessory.Fan(element, this));
+                        break;
+                    case "customFan":
+                        accessories.push(new fs_Accessory.CustomFan(element, this));
+                        break;
+                    case "radio":
+                        accessories.push(new fs_Accessory.Radio(element, this));
+                        break;
                     default:
                         this.log.warn("[WARN]Wrong Type -> %s", element['type']);
                 }
