@@ -113,6 +113,18 @@ class Radio {
 
         this.syncInterval = config["interval"] || 30000;
 
+        this.deviceIndex = 0;
+        if (config['deviceIp']) {
+            let index = 0;
+            for (var elem in platform.config.devices) {
+                if (elem == config['deviceIp']) {
+                    this.deviceIndex = index;
+                    break;
+                }
+                index++;
+            }
+        }
+
         Accessory = platform.Accessory;
         Service = platform.Service;
         Characteristic = platform.Characteristic;
@@ -190,7 +202,7 @@ class Radio {
         if (this.platformConfig.reversalPower) {
             _value = !value
         }
-        this.platform.device.call('play_fm', [_value ? 'on' : 'off'])
+        this.platform.devices[this.deviceIndex].call('play_fm', [_value ? 'on' : 'off'])
             .then(res => {
                 callback()
                 this.powerReferCallback(value)
@@ -205,7 +217,7 @@ class Radio {
         if (this.onState === undefined) {
             this.setState(value != 0, () => { })
         }
-        this.platform.device.call('volume_ctrl_fm', [value.toString()])
+        this.platform.devices[this.deviceIndex].call('volume_ctrl_fm', [value.toString()])
             .then(res => callback())
             .catch(err => {
                 this.log('volume_ctrl_fm failed:', err)
@@ -213,7 +225,7 @@ class Radio {
             });
     }
     getPropFm() {
-        return this.platform.device.call('get_prop_fm', [])
+        return this.platform.devices[this.deviceIndex].call('get_prop_fm', [])
             .catch(err => {
                 this.log('get_prop_fm failed:', err)
                 return {}

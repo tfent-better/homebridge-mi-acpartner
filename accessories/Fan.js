@@ -9,6 +9,18 @@ class Fan {
         this.config = config;
         this.name = config['name'];
 
+        this.deviceIndex = 0;
+        if (config['deviceIp']) {
+            let index = 0;
+            for (var elem in platform.config.devices) {
+                if (elem == config['deviceIp']) {
+                    this.deviceIndex = index;
+                    break;
+                }
+                index++;
+            }
+        }
+
         Accessory = platform.Accessory;
         Service = platform.Service;
         Characteristic = platform.Characteristic;
@@ -203,7 +215,7 @@ class Fan {
             this.log.debug("[DEBUG]Sending AC code: %s", code);
             command = 'send_cmd';
         }
-        this.platform.device.call(command, [code])
+        this.platform.devices[this.deviceIndex].call(command, [code])
             .then((data) => {
                 if (data[0] === "ok") {
                     this.log.debug("[DEBUG]Success")
@@ -218,7 +230,7 @@ class Fan {
     _stateSync() {
         this.log.debug("[%s]Syncing...", this.name);
         //Update AC state
-        const p2 = this.platform.device.call('get_model_and_state', [])
+        const p2 = this.platform.devices[this.deviceIndex].call('get_model_and_state', [])
             .then((ret) => {
                 this.log.debug("Partner state----------------------");
                 const model = ret[0],
