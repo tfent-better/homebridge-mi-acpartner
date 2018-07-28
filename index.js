@@ -100,13 +100,13 @@ XiaoMiAcPartner.prototype = {
                         accessories.push(new fs_Accessory.ClimateAccessory(element, this));
                         break;
                     case "fan":
-                        accessories.push(new fs_Accessory.Fan(element, this));
+                        accessories.push(new fs_Accessory.FanAccessory(element, this));
                         break;
                     case "customFan":
-                        accessories.push(new fs_Accessory.CustomFan(element, this));
+                        accessories.push(new fs_Accessory.CustomFanAccessory(element, this));
                         break;
                     case "radio":
-                        accessories.push(new fs_Accessory.Radio(element, this));
+                        accessories.push(new fs_Accessory.RadioAccessory(element, this));
                         break;
                     default:
                         this.log.warn("[WARN]Wrong Type -> %s", element['type']);
