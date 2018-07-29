@@ -103,13 +103,16 @@ class CustomFan {
             return;
         }
         //Update CurrentTemperature
-        const p1 = this.platform.devices[this.deviceIndex].call('get_prop', ["usb_on"])
-            .then(([on]) => {
-                this.active = on
+        const p1 = this.platform.devices[this.deviceIndex].call('get_prop', ["on", "usb_on", "temperature", "wifi_led"])
+            .then(([on, usb_on, temperature, wifi_led]) => {
+                this.active = !!usb_on
 
-                this.onState.updateValue(on);
-                
-                this.log.debug("[PowerSwitch]usb_on -> %s", on);
+                this.onState.updateValue(this.active);
+
+                this.log.debug("[PowerSwitch]on -> %s", on);
+                this.log.debug("[PowerSwitch]usb_on -> %s", usb_on);
+                this.log.debug("[PowerSwitch]temperature -> %s", temperature);
+                this.log.debug("[PowerSwitch]wifi_led -> %s", wifi_led);
             })
             .catch((err) => {
                 this.log.error("[%s]Sync failed! %s", this.name, err);
