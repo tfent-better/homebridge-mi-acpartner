@@ -7,6 +7,7 @@ const HeaterCoolerAccessory = require('./heaterCooler');
 const FanAccessory = require('./Fan');
 const CustomFanAccessory = require('./CustomFan');
 const RadioAccessory = require('./Radio');
+const PowerSwitchAccessory = require('./PowerSwitch');
 
 module.exports = {
     ClimateAccessory,
@@ -16,5 +17,6 @@ module.exports = {
     HeaterCoolerAccessory,
     FanAccessory,
     CustomFanAccessory,
-    RadioAccessory
+    RadioAccessory,
+    PowerSwitchAccessory
 }

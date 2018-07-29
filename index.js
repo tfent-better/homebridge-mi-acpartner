@@ -108,6 +108,9 @@ XiaoMiAcPartner.prototype = {
                     case "radio":
                         accessories.push(new fs_Accessory.RadioAccessory(element, this));
                         break;
+                    case "powerSwitch":
+                        accessories.push(new fs_Accessory.PowerSwitchAccessory(element, this));
+                        break;
                     default:
                         this.log.warn("[WARN]Wrong Type -> %s", element['type']);
                 }
