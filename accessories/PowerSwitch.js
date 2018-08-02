@@ -102,6 +102,9 @@ class CustomFan {
         })) {
             return;
         }
+        if(!this.platform.deviceMap[this.config['deviceIp']]){
+            return
+        }
         //Update CurrentTemperature
         const p1 = this.platform.deviceMap[this.config['deviceIp']].call('get_prop', ["on", "usb_on", "temperature", "wifi_led"])
             .then(([on, usb_on, temperature, wifi_led]) => {
