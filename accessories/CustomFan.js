@@ -125,11 +125,11 @@ class CustomFan {
         })) {
             return;
         }
-        if (this.powerDeviceIndex <= 0) {
+        if (!this.platform.deviceMap[this.config['powerDeviceIp']]) {
             return
         }
         //Update CurrentTemperature
-        const p1 = this.platform.devices[this.powerDeviceIndex].call('get_power', [])
+        const p1 = this.platform.deviceMap[this.config['powerDeviceIp']].call('get_power', [])
             .then(([power]) => {
                 if (power > 1000) {
                     this.active = 1
@@ -238,7 +238,7 @@ class CustomFan {
             this.log.debug("[DEBUG]Sending AC code: %s", code);
             command = 'send_cmd';
         }
-        this.platform.devices[this.deviceIndex].call(command, [code])
+        this.platform.deviceMap[this.config['deviceIp']].call(command, [code])
             .then((data) => {
                 if (data[0] === "ok") {
                     this.log.debug("[DEBUG]Success")

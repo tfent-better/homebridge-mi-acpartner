@@ -103,7 +103,7 @@ class CustomFan {
             return;
         }
         //Update CurrentTemperature
-        const p1 = this.platform.devices[this.deviceIndex].call('get_prop', ["on", "usb_on", "temperature", "wifi_led"])
+        const p1 = this.platform.deviceMap[this.config['deviceIp']].call('get_prop', ["on", "usb_on", "temperature", "wifi_led"])
             .then(([on, usb_on, temperature, wifi_led]) => {
                 this.active = !!usb_on
 
@@ -154,7 +154,7 @@ class CustomFan {
     }
 
     _sendCmdAsync(command, callback) {
-        this.platform.devices[this.deviceIndex].call(command, [])
+        this.platform.deviceMap[this.config['deviceIp']].call(command, [])
             .then((data) => {
                 if (data[0] === "ok") {
                     this.log.debug("[DEBUG]Success")
