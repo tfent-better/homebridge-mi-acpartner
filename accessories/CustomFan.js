@@ -24,16 +24,6 @@ class CustomFan {
                 index++;
             }
         }
-        if (config['powerDeviceIp']) {
-            let index = 0;
-            for (var elem in platform.config.devices) {
-                if (elem == config['powerDeviceIp']) {
-                    this.powerDeviceIndex = index;
-                    break
-                }
-                index++;
-            }
-        }
 
         //customize
         if (config.customize) {
@@ -140,7 +130,6 @@ class CustomFan {
                     } else {
                         this.speed = 2
                     }
-                    console.log(this.speed)
                     this.RotationSpeed.updateValue(this.speed);
                     this.Active.updateValue(Characteristic.Active.ACTIVE);
                 } else {
@@ -210,7 +199,8 @@ class CustomFan {
             callback();
             return;
         }
-        this._sendCmdAsync(this.customi.speed[value] || this.customi.speed.auto, callback)
+        callback();
+        // this._sendCmdAsync(this.customi.speed[value] || this.customi.speed.auto, callback)
     }
     setSwingMode(value, callback) {
         if (!this.customi) {
