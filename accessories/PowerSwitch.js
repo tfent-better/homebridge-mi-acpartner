@@ -102,13 +102,20 @@ class CustomFan {
         })) {
             return;
         }
-        if(!this.platform.deviceMap[this.config['deviceIp']]){
+        if (!this.platform.deviceMap[this.config['deviceIp']]) {
             return
         }
         //Update CurrentTemperature
         const p1 = this.platform.deviceMap[this.config['deviceIp']].call('get_prop', ["on", "usb_on", "temperature", "wifi_led"])
             .then(([on, usb_on, temperature, wifi_led]) => {
-                this.active = !!usb_on
+                switch (this.config['powerTarget']) {
+                    case 'socket':
+                        this.active = !!on
+                        break;
+                    case 'usb':
+                        this.active = !!usb_on
+                        break;
+                }
 
                 this.onState.updateValue(this.active);
 
@@ -149,7 +156,15 @@ class CustomFan {
     }
 
     setActive(value, callback) {
-        this._sendCmdAsync(value ? 'set_usb_on' : 'set_usb_off', callback)
+        switch (this.config['powerTarget']) {
+            case 'socket':
+                this._sendCmdAsync(value ? 'set_on' : 'set_off', callback)
+                break;
+            case 'usb':
+                this._sendCmdAsync(value ? 'set_usb_on' : 'set_usb_off', callback)
+                break;
+            default: callback()
+        }
     }
     getActive(callback) {
         setImmediate(() => { this._stateSync(); });
